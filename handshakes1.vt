@@ -1,0 +1,80 @@
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "04/09/2022 08:04:06"
+                                                                                
+// Verilog Test Bench template for design : handshakes1
+// 
+// Simulation tool : ModelSim (Verilog)
+// 
+
+`timescale 1 ns/ 1 ns
+module handshakes1_vlg_tst();
+// constants                                           
+// general purpose registers
+// test vector input registers
+reg clk;
+reg [7:0] data_i;
+reg ready_i;
+reg reset;
+reg valid_i;
+// wires                                               
+wire [7:0]  data_o;
+wire ready_o;
+wire [7:0]  receiver;
+wire valid_o;
+
+// assign statements (if any)                          
+handshakes1 i1 (
+// port map - connection between master ports and signals/registers   
+	.clk(clk),
+	.data_i(data_i),
+	.data_o(data_o),
+	.ready_i(ready_i),
+	.ready_o(ready_o),
+	.receiver(receiver),
+	.reset(reset),
+	.valid_i(valid_i),
+	.valid_o(valid_o)
+);
+initial                                                
+begin    
+clk = 1'b0;                                              
+valid_i = 1'b1;
+data_i  = 8'd0; 
+ready_i = 1'b0;
+
+	reset = 1'b1;
+	#100 reset = 1'b0;
+	
+	#1000 $stop;                
+end 
+
+
+always #10 clk <= ~clk ; 
+
+always #20 begin 
+				ready_i <= ~ready_i;
+				valid_i <= ~valid_i;
+				if(ready_o == 1'b0&&valid_i ==1'b0)
+				data_i <= data_i + 8'd1;
+				end
+                                                 
+endmodule
+
