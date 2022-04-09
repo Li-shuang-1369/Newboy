@@ -1,0 +1,89 @@
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "04/08/2022 09:31:12"
+                                                                                
+// Verilog Test Bench template for design : Handshakes
+// 
+// Simulation tool : ModelSim (Verilog)
+// 
+
+`timescale 1 ns/ 1 ns
+module Handshakes_vlg_tst();
+// constants                                           
+// general purpose registers
+// test vector input registers
+reg CLK;
+reg [7:0] DATA_UP;
+reg READY_DOWN;
+reg RESET;
+reg VALID_UP;
+// wires                                               
+wire [7:0]  DATA_DOWN;
+wire READY_UP;
+wire VALID_DOWN;
+
+// assign statements (if any)                          
+Handshakes i1 (
+// port map - connection between master ports and signals/registers   
+	.CLK(CLK),
+	.DATA_DOWN(DATA_DOWN),
+	.DATA_UP(DATA_UP),
+	.READY_DOWN(READY_DOWN),
+	.READY_UP(READY_UP),
+	.RESET(RESET),
+	.VALID_DOWN(VALID_DOWN),
+	.VALID_UP(VALID_UP)
+);
+initial                                                
+begin
+	DATA_UP = 8'd0;                                            
+	CLK = 1'b0;
+	VALID_UP = 1'b1;
+	READY_DOWN = 1'b0;
+	//VALID_UP由什么决定？？？外部？      READY_DOWN 如何输入
+	//想让READY_DOWN每隔10翻转一次，当READY_UP由1到0时，VALID_UP=0
+	
+	
+	
+	RESET = 1'b1;
+	#100 RESET = 1'b0;
+	
+	#1000 $stop;                   
+end                                                    
+always	#10 CLK <= ~CLK;
+always 
+	begin
+	
+	 if(READY_DOWN == 1'b0&&RESET ==1'b0)
+			begin
+				VALID_UP <= 1'b1;
+				DATA_UP <= DATA_UP + 8'd1;
+			end
+			
+	 else
+			VALID_UP <= 1'b0;
+	 #20 READY_DOWN <= ~READY_DOWN;
+
+	
+
+	end   
+
+endmodule
+
